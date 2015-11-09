@@ -10,35 +10,30 @@
             <objects>
                 <controller id="AgC-eL-Hgc" customClass="InterfaceController" customModule="RunwayTimer_WatchKit_App" customModuleProvider="target">
                     <items>
-                        <group width="1" height="110" alignment="left" id="q4e-Ah-vga">
+                        <table alignment="left" id="WM9-92-vZV">
                             <items>
-                                <table alignment="left" id="WM9-92-vZV">
-                                    <items>
-                                        <tableRow id="GVe-Us-4sc" customClass="TimerTableController" customModule="RunwayTimer_WatchKit_Extension">
-                                            <group key="rootItem" width="1" height="115" alignment="left" id="UfR-Ki-afY">
-                                                <items>
-                                                    <label width="0.5" alignment="left" verticalAlignment="center" text="Label" id="eg2-if-2VY"/>
-                                                    <label width="0.5" alignment="left" verticalAlignment="center" text="Label" textAlignment="right" id="jnb-ns-iS8"/>
-                                                </items>
-                                            </group>
-                                            <connections>
-                                                <outlet property="nameLabel" destination="eg2-if-2VY" id="UQM-CU-XYi"/>
-                                                <outlet property="timerLabel" destination="jnb-ns-iS8" id="SUa-3c-acb"/>
-                                            </connections>
-                                        </tableRow>
-                                    </items>
-                                </table>
+                                <tableRow identifier="TimerTableController" id="GVe-Us-4sc" customClass="TimerTableController" customModule="RunwayTimer_WatchKit_Extension">
+                                    <group key="rootItem" width="1" height="40" alignment="left" id="UfR-Ki-afY">
+                                        <items>
+                                            <label width="0.5" alignment="left" verticalAlignment="center" text="Label" id="eg2-if-2VY"/>
+                                            <label width="0.5" alignment="left" verticalAlignment="center" text="Label" textAlignment="right" id="jnb-ns-iS8"/>
+                                        </items>
+                                    </group>
+                                    <connections>
+                                        <outlet property="nameLabel" destination="eg2-if-2VY" id="UQM-CU-XYi"/>
+                                        <outlet property="timerLabel" destination="jnb-ns-iS8" id="SUa-3c-acb"/>
+                                    </connections>
+                                </tableRow>
                             </items>
-                        </group>
-                        <button width="1" alignment="left" title="Add" id="3ol-aH-Y5w">
-                            <connections>
-                                <action selector="addAction" destination="AgC-eL-Hgc" id="p3N-R5-OrQ"/>
-                            </connections>
-                        </button>
+                        </table>
                     </items>
                     <menu key="menu" id="m77-qY-3AR">
                         <items>
-                            <menuItem title="Add" icon="add" id="vEw-wW-x3I"/>
+                            <menuItem title="Add" icon="add" id="vEw-wW-x3I">
+                                <connections>
+                                    <action selector="addAction" destination="AgC-eL-Hgc" id="VGD-lo-E9s"/>
+                                </connections>
+                            </menuItem>
                         </items>
                     </menu>
                     <connections>
@@ -53,11 +48,46 @@
             <objects>
                 <controller identifier="AddTimerInterfaceController" id="PcX-s3-WTN" customClass="AddTimerInterfaceController" customModule="RunwayTimer_WatchKit_Extension">
                     <items>
-                        <label alignment="left" text="hello" id="Aqp-So-BdI"/>
+                        <group width="1" height="60" alignment="left" id="Mwg-Gv-9ko">
+                            <items>
+                                <picker width="0.33000000000000002" height="100" alignment="left" focusStyle="sequence" id="eqF-28-Tzu"/>
+                                <picker width="0.33000000000000002" height="100" alignment="left" focusStyle="sequence" id="yJJ-3G-Mm4"/>
+                                <picker width="0.33000000000000002" height="100" alignment="left" focusStyle="sequence" id="Jrm-i0-Yea"/>
+                            </items>
+                        </group>
+                        <label width="1" alignment="left" text="Label" textAlignment="center" id="eX2-pV-R5p"/>
+                        <group width="1" alignment="left" id="VXb-eP-Azu">
+                            <items>
+                                <button width="0.33000000000000002" alignment="left" title="Button" id="IQC-BI-tTE">
+                                    <connections>
+                                        <action selector="pauseResumeAction" destination="PcX-s3-WTN" id="PBf-3f-pu6"/>
+                                    </connections>
+                                </button>
+                                <button width="0.33000000000000002" alignment="left" title="Button" id="lA1-19-L2t">
+                                    <connections>
+                                        <action selector="startStopAction" destination="PcX-s3-WTN" id="sE6-D6-pj4"/>
+                                    </connections>
+                                </button>
+                                <button width="0.33000000000000002" alignment="left" title="Button" id="G0j-e3-bFr">
+                                    <connections>
+                                        <action selector="saveAction" destination="PcX-s3-WTN" id="3x4-zt-aYS"/>
+                                    </connections>
+                                </button>
+                            </items>
+                        </group>
                     </items>
+                    <connections>
+                        <outlet property="hourPicker" destination="eqF-28-Tzu" id="MdM-hm-VFR"/>
+                        <outlet property="minutePicker" destination="yJJ-3G-Mm4" id="2KV-6z-kh6"/>
+                        <outlet property="pauseResumeButton" destination="IQC-BI-tTE" id="p3E-lq-4ER"/>
+                        <outlet property="saveButton" destination="G0j-e3-bFr" id="eGU-Ya-qNe"/>
+                        <outlet property="secondPicker" destination="Jrm-i0-Yea" id="Wps-ly-Cyh"/>
+                        <outlet property="startStopButton" destination="lA1-19-L2t" id="kBn-mB-q2f"/>
+                        <outlet property="timerLabel" destination="eX2-pV-R5p" id="okP-GF-1Zi"/>
+                    </connections>
                 </controller>
             </objects>
-            <point key="canvasLocation" x="363" y="549"/>
+            <point key="canvasLocation" x="218" y="527"/>
         </scene>
     </scenes>
 </document>

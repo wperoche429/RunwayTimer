@@ -13,15 +13,18 @@ import Foundation
 class InterfaceController: WKInterfaceController {
 
     @IBOutlet var timerTable: WKInterfaceTable!
+    var timers : [Time]?
     override func awakeWithContext(context: AnyObject?) {
         super.awakeWithContext(context)
-        var timers = TimerManager.sharedInstance.timers
         // Configure interface objects here.
     }
 
     override func willActivate() {
         // This method is called when watch view controller is about to be visible to user
         super.willActivate()
+        timers = TimerManager.sharedInstance.timers
+        timerTable.setNumberOfRows((timers?.count)!, withRowType: "TimerTableController")
+        loadTable()
     }
 
     override func didDeactivate() {
@@ -34,4 +37,19 @@ class InterfaceController: WKInterfaceController {
         pushControllerWithName("AddTimerInterfaceController",
             context: nil)
     }
+    
+    func loadTable() {
+        if timers?.count == 0 {
+            return
+        }
+        
+        for index in 0..<timers!.count {
+            let row = timerTable.rowControllerAtIndex(index) as! TimerTableController
+            let timer = timers![index]
+            row.nameLabel.setText(timer.name)
+            row.timerLabel.setText(timer.remainingTimeString())
+            
+        }
+    }
+    
 }
