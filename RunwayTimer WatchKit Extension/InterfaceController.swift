@@ -12,6 +12,8 @@ import Foundation
 
 class InterfaceController: WKInterfaceController {
 
+    @IBOutlet var timerTable: WKInterfaceTable!
+    var timerObjArray : [TimerObj]?
     override func awakeWithContext(context: AnyObject?) {
         super.awakeWithContext(context)
         
@@ -21,6 +23,7 @@ class InterfaceController: WKInterfaceController {
     override func willActivate() {
         // This method is called when watch view controller is about to be visible to user
         super.willActivate()
+        timerObjArray = TimerObj.retrieveAllTimers()
     }
 
     override func didDeactivate() {
@@ -28,4 +31,9 @@ class InterfaceController: WKInterfaceController {
         super.didDeactivate()
     }
 
+
+    @IBAction func addAction() {
+        pushControllerWithName("AddTimerInterfaceController",
+            context: nil)
+    }
 }
