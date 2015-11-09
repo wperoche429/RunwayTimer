@@ -48,11 +48,42 @@
             <objects>
                 <controller identifier="AddTimerInterfaceController" id="PcX-s3-WTN" customClass="AddTimerInterfaceController" customModule="RunwayTimer_WatchKit_Extension">
                     <items>
-                        <group width="1" height="60" alignment="left" id="Mwg-Gv-9ko">
+                        <group width="1" height="44" alignment="left" id="VU0-Ob-6r5">
                             <items>
-                                <picker width="0.33000000000000002" height="100" alignment="left" focusStyle="sequence" id="eqF-28-Tzu"/>
-                                <picker width="0.33000000000000002" height="100" alignment="left" focusStyle="sequence" id="yJJ-3G-Mm4"/>
-                                <picker width="0.33000000000000002" height="100" alignment="left" focusStyle="sequence" id="Jrm-i0-Yea"/>
+                                <picker width="0.33000000000000002" height="100" alignment="center" focusStyle="stack" id="9Yk-T2-JWU">
+                                    <connections>
+                                        <action selector="char1Changed:" destination="PcX-s3-WTN" id="ylJ-Dx-gsE"/>
+                                    </connections>
+                                </picker>
+                                <picker width="0.33000000000000002" height="100" alignment="center" focusStyle="stack" id="u7F-Jt-sxf">
+                                    <connections>
+                                        <action selector="char2Changed:" destination="PcX-s3-WTN" id="RWe-ta-tG9"/>
+                                    </connections>
+                                </picker>
+                                <picker width="0.33000000000000002" height="100" alignment="center" focusStyle="stack" id="pzZ-sA-0wh">
+                                    <connections>
+                                        <action selector="char3Changed:" destination="PcX-s3-WTN" id="Ou0-G1-68x"/>
+                                    </connections>
+                                </picker>
+                            </items>
+                        </group>
+                        <group width="1" height="44" alignment="left" id="Mwg-Gv-9ko">
+                            <items>
+                                <picker width="0.33000000000000002" height="100" alignment="left" focusStyle="sequence" id="eqF-28-Tzu">
+                                    <connections>
+                                        <action selector="hourChanged:" destination="PcX-s3-WTN" id="3rl-jN-eOr"/>
+                                    </connections>
+                                </picker>
+                                <picker width="0.33000000000000002" height="100" alignment="left" focusStyle="sequence" id="yJJ-3G-Mm4">
+                                    <connections>
+                                        <action selector="minuteChanged:" destination="PcX-s3-WTN" id="nqn-FE-ZSt"/>
+                                    </connections>
+                                </picker>
+                                <picker width="0.33000000000000002" height="100" alignment="left" focusStyle="sequence" id="Jrm-i0-Yea">
+                                    <connections>
+                                        <action selector="secondChanged:" destination="PcX-s3-WTN" id="lwq-z3-IA9"/>
+                                    </connections>
+                                </picker>
                             </items>
                         </group>
                         <label width="1" alignment="left" text="Label" textAlignment="center" id="eX2-pV-R5p"/>
@@ -77,6 +108,9 @@
                         </group>
                     </items>
                     <connections>
+                        <outlet property="char1Picker" destination="9Yk-T2-JWU" id="yKf-rE-QwX"/>
+                        <outlet property="char2Picker" destination="u7F-Jt-sxf" id="Oob-fv-0Eb"/>
+                        <outlet property="char3Picker" destination="pzZ-sA-0wh" id="gfT-Ob-no8"/>
                         <outlet property="hourPicker" destination="eqF-28-Tzu" id="MdM-hm-VFR"/>
                         <outlet property="minutePicker" destination="yJJ-3G-Mm4" id="2KV-6z-kh6"/>
                         <outlet property="pauseResumeButton" destination="IQC-BI-tTE" id="p3E-lq-4ER"/>
@@ -87,7 +121,7 @@
                     </connections>
                 </controller>
             </objects>
-            <point key="canvasLocation" x="218" y="527"/>
+            <point key="canvasLocation" x="51" y="521"/>
         </scene>
     </scenes>
 </document>

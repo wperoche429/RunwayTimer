@@ -47,7 +47,7 @@ class InterfaceController: WKInterfaceController {
             let row = timerTable.rowControllerAtIndex(index) as! TimerTableController
             let timer = timers![index]
             row.nameLabel.setText(timer.name)
-            row.timerLabel.setText(timer.remainingTimeString())
+            row.currentTimer = timer
             
         }
     }

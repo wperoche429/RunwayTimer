@@ -14,4 +14,15 @@ class TimerTableController: NSObject {
     @IBOutlet var nameLabel: WKInterfaceLabel!
     @IBOutlet var timerLabel: WKInterfaceLabel!
     
+    override init() {
+        super.init()
+        NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("updateDisplay"), userInfo: nil, repeats: true)
+    }
+    
+    func updateDisplay() {
+        if let timer = currentTimer {
+            timerLabel.setText(timer.remainingTimeString())
+        }
+    }
+
 }
