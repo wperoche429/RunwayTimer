@@ -10,7 +10,7 @@ import WatchKit
 
 class TimerTableController: NSObject {
 
-    var currentTimer : TimerObj?
+    var currentTimer : Time?
     @IBOutlet var nameLabel: WKInterfaceLabel!
     @IBOutlet var timerLabel: WKInterfaceLabel!
     

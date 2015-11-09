@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		225DD48E1BF0972400780659 /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225DD48D1BF0972400780659 /* Time.swift */; };
+		225DD4901BF0979400780659 /* TimerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225DD48F1BF0979400780659 /* TimerManager.swift */; };
 		22CB981D1BF038A10000E483 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CB981C1BF038A10000E483 /* AppDelegate.swift */; };
 		22CB981F1BF038A10000E483 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CB981E1BF038A10000E483 /* ViewController.swift */; };
 		22CB98221BF038A10000E483 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22CB98201BF038A10000E483 /* Main.storyboard */; };
@@ -21,7 +23,6 @@
 		22CB98441BF038A10000E483 /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CB98431BF038A10000E483 /* ComplicationController.swift */; };
 		22CB98461BF038A10000E483 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 22CB98451BF038A10000E483 /* Assets.xcassets */; };
 		22CB98561BF03CF30000E483 /* TimerTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CB98551BF03CF30000E483 /* TimerTableController.swift */; };
-		22CB98581BF03DA80000E483 /* TimerObj.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CB98571BF03DA80000E483 /* TimerObj.swift */; };
 		22CB985A1BF0405B0000E483 /* AddTimerInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CB98591BF0405B0000E483 /* AddTimerInterfaceController.swift */; };
 /* End PBXBuildFile section */
 
@@ -68,6 +69,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		225DD48D1BF0972400780659 /* Time.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Time.swift; sourceTree = "<group>"; };
+		225DD48F1BF0979400780659 /* TimerManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimerManager.swift; sourceTree = "<group>"; };
 		22CB98191BF038A10000E483 /* RunwayTimer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RunwayTimer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		22CB981C1BF038A10000E483 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		22CB981E1BF038A10000E483 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -86,7 +89,6 @@
 		22CB98451BF038A10000E483 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		22CB98471BF038A10000E483 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		22CB98551BF03CF30000E483 /* TimerTableController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimerTableController.swift; sourceTree = "<group>"; };
-		22CB98571BF03DA80000E483 /* TimerObj.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimerObj.swift; sourceTree = "<group>"; };
 		22CB98591BF0405B0000E483 /* AddTimerInterfaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddTimerInterfaceController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -155,9 +157,10 @@
 			isa = PBXGroup;
 			children = (
 				22CB983F1BF038A10000E483 /* InterfaceController.swift */,
+				225DD48D1BF0972400780659 /* Time.swift */,
 				22CB98591BF0405B0000E483 /* AddTimerInterfaceController.swift */,
 				22CB98551BF03CF30000E483 /* TimerTableController.swift */,
-				22CB98571BF03DA80000E483 /* TimerObj.swift */,
+				225DD48F1BF0979400780659 /* TimerManager.swift */,
 				22CB98411BF038A10000E483 /* ExtensionDelegate.swift */,
 				22CB98431BF038A10000E483 /* ComplicationController.swift */,
 				22CB98451BF038A10000E483 /* Assets.xcassets */,
@@ -308,11 +311,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				22CB98421BF038A10000E483 /* ExtensionDelegate.swift in Sources */,
+				225DD4901BF0979400780659 /* TimerManager.swift in Sources */,
 				22CB98401BF038A10000E483 /* InterfaceController.swift in Sources */,
+				225DD48E1BF0972400780659 /* Time.swift in Sources */,
 				22CB98561BF03CF30000E483 /* TimerTableController.swift in Sources */,
 				22CB985A1BF0405B0000E483 /* AddTimerInterfaceController.swift in Sources */,
 				22CB98441BF038A10000E483 /* ComplicationController.swift in Sources */,
-				22CB98581BF03DA80000E483 /* TimerObj.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
