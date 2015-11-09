@@ -47,9 +47,16 @@ class InterfaceController: WKInterfaceController {
             let row = timerTable.rowControllerAtIndex(index) as! TimerTableController
             let timer = timers![index]
             row.nameLabel.setText(timer.name)
+            row.timerLabel.setText(timer.remainingTimeString())
             row.currentTimer = timer
             
         }
+    }
+    
+    override func table(table: WKInterfaceTable, didSelectRowAtIndex rowIndex: Int) {
+        pushControllerWithName("AddTimerInterfaceController",
+            context: timers![rowIndex])
+        
     }
     
 }

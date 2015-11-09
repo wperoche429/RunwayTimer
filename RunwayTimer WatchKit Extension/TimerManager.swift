@@ -26,6 +26,17 @@ class TimerManager {
             timers = []
         }
         
+        var index = 0
+        for localTime in timers! {
+            if localTime.id == time.id {
+                self.timers?.insert(time, atIndex: index)
+                self.timers?.removeAtIndex(index + 1)
+                updateStorage()
+                return
+            }
+            index++
+        }
+        
         timers?.append(time)
         updateStorage()
     }

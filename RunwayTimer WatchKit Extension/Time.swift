@@ -11,23 +11,11 @@ import Foundation
 
 class Time: NSObject {
     
-    var hour : Int = 0 {
-        didSet {
-            save()
-        }
-    }
+    var hour : Int = 0
     
-    var minute : Int = 0 {
-        didSet {
-            save()
-        }
-    }
+    var minute : Int = 0
     
-    var second : Int = 0 {
-        didSet {
-            save()
-        }
-    }
+    var second : Int = 0
     
     var remainingTotalTime : Int = 0
     var timeStarted : NSDate?

@@ -22,6 +22,7 @@ class AddTimerInterfaceController: WKInterfaceController {
     @IBOutlet var startStopButton: WKInterfaceButton!
     @IBOutlet var saveButton: WKInterfaceButton!
     var timer : Time?
+    var scheduledTimer : NSTimer?
     var localHour = 0
     var localMinute = 0
     var localSeconds = 0
@@ -85,10 +86,10 @@ class AddTimerInterfaceController: WKInterfaceController {
                 localMinute = (timer?.minute)!
                 localSeconds = (timer?.second)!
                 
-                let characters = Array(arrayLiteral: timer?.name)
-                char1 = alphaNumericArray.indexOf(characters[0]!)!
-                char2 = alphaNumericArray.indexOf(characters[1]!)!
-                char3 = alphaNumericArray.indexOf(characters[2]!)!
+                let characters = [Character](timer!.name.characters)
+                char1 = alphaNumericArray.indexOf(String(characters[0]))!
+                char2 = alphaNumericArray.indexOf(String(characters[1]))!
+                char3 = alphaNumericArray.indexOf(String(characters[2]))!
                 
                 
             }
@@ -109,27 +110,48 @@ class AddTimerInterfaceController: WKInterfaceController {
     override func willActivate() {
         // This method is called when watch view controller is about to be visible to user
         super.willActivate()
+        updateButton()
+        if (scheduledTimer != nil) {
+            scheduledTimer?.invalidate()
+            scheduledTimer = nil
+        }
+        
+        scheduledTimer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("updateLabel"), userInfo: nil, repeats: true)
     }
     
     override func didDeactivate() {
         // This method is called when watch view controller is no longer visible
         super.didDeactivate()
+        if (scheduledTimer != nil) {
+            scheduledTimer?.invalidate()
+            scheduledTimer = nil
+        }
     }
     
     
     @IBAction func pauseResumeAction() {
+        if (timer?.timePause != nil) {
+            timer?.resume()
+        } else {
+            timer?.pause()
+        }
+        updateButton()
     }
     
     @IBAction func startStopAction() {
         createTimer()
-        timer?.start()
-        popController()
+        if (timer?.timeStarted != nil) {
+            timer?.stop()
+        } else {
+            timer?.start()
+        }
+        updateButton()
     }
     
     @IBAction func saveAction() {
         createTimer()
         timer?.save()
-        popController()
+        updateButton()
     }
     
     @IBAction func char1Changed(value: Int) {
@@ -156,6 +178,7 @@ class AddTimerInterfaceController: WKInterfaceController {
     
     
     func updateLabel() {
+        
         var timerValue = 0
         timerValue += localSeconds
         timerValue += localMinute * 60
@@ -165,8 +188,17 @@ class AddTimerInterfaceController: WKInterfaceController {
         let uMin : Int = minLeft % 60
         let uSec : Int = timerValue % 60
         
-        let text = String(format: "%02d", uHour) + ":" + String(format: "%02d", uMin) + ":" + String(format: "%02d", uSec)
-        timerLabel.setText(text)
+        var timerText = String(format: "%02d", uHour) + ":" + String(format: "%02d", uMin) + ":" + String(format: "%02d", uSec)
+        if let _ = timer {
+            if (timer?.timeStarted != nil) {
+                timerText = (timer?.remainingTimeString())!
+            }
+            
+        }
+        
+        timerLabel.setText(timerText)
+
+        
 
     }
     
@@ -179,5 +211,62 @@ class AddTimerInterfaceController: WKInterfaceController {
         timer?.minute = localMinute
         timer?.second = localSeconds
         timer?.name = alphaNumericArray[char1] + alphaNumericArray[char2] + alphaNumericArray[char3]
+    }
+    
+    func updateButton() {
+        if let _ = timer {
+            if (timer?.timeStarted != nil) {
+                if (timer?.timePause != nil) {
+                    pauseResumeButton.setTitle("Resume")
+                    startStopButton.setTitle("Stop")
+                    saveButton.setTitle("Save")
+                    
+                } else {
+                    pauseResumeButton.setTitle("Pause")
+                    startStopButton.setTitle("Stop")
+                    saveButton.setTitle("Save")
+                    
+                }
+                pauseResumeButton.setEnabled(true)
+                startStopButton.setEnabled(true)
+                saveButton.setEnabled(true)
+                
+                hourPicker.setEnabled(false)
+                minutePicker.setEnabled(false)
+                secondPicker.setEnabled(false)
+                char1Picker.setEnabled(false)
+                char2Picker.setEnabled(false)
+                char3Picker.setEnabled(false)
+                
+            } else {
+                pauseResumeButton.setTitle("Pause")
+                startStopButton.setTitle("Start")
+                saveButton.setTitle("Save")
+                
+                pauseResumeButton.setEnabled(false)
+                startStopButton.setEnabled(true)
+                saveButton.setEnabled(true)
+                hourPicker.setEnabled(true)
+                minutePicker.setEnabled(true)
+                secondPicker.setEnabled(true)
+                char1Picker.setEnabled(true)
+                char2Picker.setEnabled(true)
+                char3Picker.setEnabled(true)
+                char1Picker.focus()
+            }
+            
+            
+        } else {
+            pauseResumeButton.setTitle("Pause")
+            startStopButton.setTitle("Start")
+            saveButton.setTitle("Save")
+            
+            pauseResumeButton.setEnabled(false)
+            startStopButton.setEnabled(true)
+            saveButton.setEnabled(true)
+            
+            char1Picker.focus()
+            
+        }
     }
 }

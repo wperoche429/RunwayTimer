@@ -16,10 +16,12 @@ class TimerTableController: NSObject {
     
     override init() {
         super.init()
+        
         NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("updateDisplay"), userInfo: nil, repeats: true)
     }
     
     func updateDisplay() {
+        timerLabel.setText("00:00:00")
         if let timer = currentTimer {
             timerLabel.setText(timer.remainingTimeString())
         }
