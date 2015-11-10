@@ -17,6 +17,7 @@ class InterfaceController: WKInterfaceController {
     override func awakeWithContext(context: AnyObject?) {
         super.awakeWithContext(context)
         // Configure interface objects here.
+        NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("checkFinishingTimer"), userInfo: nil, repeats: true)
     }
 
     override func willActivate() {
@@ -57,6 +58,10 @@ class InterfaceController: WKInterfaceController {
         pushControllerWithName("AddTimerInterfaceController",
             context: timers![rowIndex])
         
+    }
+    
+    func checkFinishingTimer() {
+        TimerManager.sharedInstance.checkFinishingTimer()
     }
     
 }

@@ -30,6 +30,10 @@ class TimerTableController: NSObject {
         let timer = TimerManager.sharedInstance.retrieveAllTimers()![index]
         nameLabel.setText(timer.name)
         timerLabel.setText(timer.remainingTimeString())
+        if (timer.remainingTotalTime == 0 && timer.timeStarted != nil) {
+            WKInterfaceDevice.currentDevice().playHaptic(.Notification)
+            timer.stop()
+        }
 
     }
 

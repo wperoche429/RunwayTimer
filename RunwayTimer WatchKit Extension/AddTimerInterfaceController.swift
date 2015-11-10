@@ -196,6 +196,11 @@ class AddTimerInterfaceController: WKInterfaceController {
             
         }
         
+        if (timer?.remainingTotalTime == 0 && timer?.timeStarted != nil) {
+            WKInterfaceDevice.currentDevice().playHaptic(.Notification)
+            timer?.stop()
+        }
+        
         timerLabel.setText(timerText)
 
         

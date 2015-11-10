@@ -79,6 +79,26 @@ class TimerManager {
         
     }
     
+    func checkFinishingTimer() -> Time?{
+        var runningTimer : [Time] = []
+        for timer in timers! {
+            if (timer.timeStarted != nil) {
+                runningTimer.append(timer)
+            }
+        }
+        
+        if (runningTimer.count == 0) {
+            print("No running timer")
+            return nil
+        }
+        
+        let sortedTimer = runningTimer.sort({ $0.remainingTotalTime < $1.remainingTotalTime })
+        let finishingTimer = sortedTimer[0]
+        print("Finishing timer: " + finishingTimer.name)
+        return finishingTimer
+    }
+    
+    
     private func updateStorage() {
         var timerArray : [NSData] = []
         for timer in timers! {

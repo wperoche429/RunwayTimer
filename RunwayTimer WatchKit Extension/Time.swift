@@ -61,7 +61,7 @@ class Time: NSObject {
         timerValue += minute * 60
         timerValue += hour * 60 * 60
         
-        remainingTotalTime = -1
+        remainingTotalTime = timerValue
         if (timerValue == 0) {
             return "00:00:00"
         }
@@ -88,6 +88,7 @@ class Time: NSObject {
         let uSec : Int = remainingTotalTime % 60
         
         let text = String(format: "%02d", uHour) + ":" + String(format: "%02d", uMin) + ":" + String(format: "%02d", uSec)
+
         return text
     }
     

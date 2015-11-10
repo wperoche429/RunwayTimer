@@ -11,18 +11,40 @@ import ClockKit
 
 class ComplicationController: NSObject, CLKComplicationDataSource {
     
+    override init() {
+        super.init()
+        NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("reloadComplications"), userInfo: nil, repeats: true)
+    }
+    
+    func reloadComplications() {
+        if let complications: [CLKComplication] = CLKComplicationServer.sharedInstance().activeComplications {
+            if complications.count > 0 {
+                for complication in complications {
+                    CLKComplicationServer.sharedInstance().reloadTimelineForComplication(complication)
+                    NSLog("Reloading complication \(complication.description)...")
+                }
+                
+            }
+        }
+    }
+    
     // MARK: - Timeline Configuration
     
     func getSupportedTimeTravelDirectionsForComplication(complication: CLKComplication, withHandler handler: (CLKComplicationTimeTravelDirections) -> Void) {
-        handler([.Forward, .Backward])
+        handler([.Forward])
     }
     
     func getTimelineStartDateForComplication(complication: CLKComplication, withHandler handler: (NSDate?) -> Void) {
-        handler(nil)
+        let currentDate = NSDate()
+        handler(currentDate)
     }
     
     func getTimelineEndDateForComplication(complication: CLKComplication, withHandler handler: (NSDate?) -> Void) {
-        handler(nil)
+        let currentDate = NSDate()
+        let endDate =
+        currentDate.dateByAddingTimeInterval(NSTimeInterval(1))
+        
+        handler(endDate)
     }
     
     func getPrivacyBehaviorForComplication(complication: CLKComplication, withHandler handler: (CLKComplicationPrivacyBehavior) -> Void) {
@@ -33,7 +55,23 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
     
     func getCurrentTimelineEntryForComplication(complication: CLKComplication, withHandler handler: ((CLKComplicationTimelineEntry?) -> Void)) {
         // Call the handler with the current timeline entry
-        handler(nil)
+        if complication.family == .ModularLarge {
+            let template = CLKComplicationTemplateModularLargeStandardBody()
+            template.headerTextProvider = CLKSimpleTextProvider(text: "Finishing Timer")
+            if let finishingTimer = TimerManager.sharedInstance.checkFinishingTimer() {
+                template.body1TextProvider = CLKSimpleTextProvider(text: finishingTimer.name + "   " + finishingTimer.remainingTimeString())
+                template
+            } else {
+                template.body1TextProvider = CLKSimpleTextProvider(text: "No running timer")
+            }
+            
+            let entry = CLKComplicationTimelineEntry(date: NSDate(),
+                complicationTemplate: template)
+            
+            handler(entry)
+        } else {
+            handler(nil)
+        }
     }
     
     func getTimelineEntriesForComplication(complication: CLKComplication, beforeDate date: NSDate, limit: Int, withHandler handler: (([CLKComplicationTimelineEntry]?) -> Void)) {
