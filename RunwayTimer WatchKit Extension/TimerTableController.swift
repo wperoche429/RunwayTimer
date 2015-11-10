@@ -10,21 +10,27 @@ import WatchKit
 
 class TimerTableController: NSObject {
 
-    var currentTimer : Time?
+    var scheduleTimer : NSTimer?
+    var index = 0
     @IBOutlet var nameLabel: WKInterfaceLabel!
     @IBOutlet var timerLabel: WKInterfaceLabel!
     
     override init() {
         super.init()
-        
-        NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("updateDisplay"), userInfo: nil, repeats: true)
+        if (scheduleTimer != nil) {
+            scheduleTimer?.invalidate()
+            scheduleTimer = nil
+        }
+        scheduleTimer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("updateDisplay"), userInfo: nil, repeats: true)
     }
     
     func updateDisplay() {
-        timerLabel.setText("00:00:00")
-        if let timer = currentTimer {
-            timerLabel.setText(timer.remainingTimeString())
-        }
+        timerLabel.setText("")
+        nameLabel.setText("")
+        let timer = TimerManager.sharedInstance.retrieveAllTimers()![index]
+        nameLabel.setText(timer.name)
+        timerLabel.setText(timer.remainingTimeString())
+
     }
 
 }

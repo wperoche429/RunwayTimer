@@ -88,7 +88,6 @@ class Time: NSObject {
         let uSec : Int = remainingTotalTime % 60
         
         let text = String(format: "%02d", uHour) + ":" + String(format: "%02d", uMin) + ":" + String(format: "%02d", uSec)
-        print(text)
         return text
     }
     

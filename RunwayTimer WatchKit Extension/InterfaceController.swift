@@ -22,7 +22,7 @@ class InterfaceController: WKInterfaceController {
     override func willActivate() {
         // This method is called when watch view controller is about to be visible to user
         super.willActivate()
-        timers = TimerManager.sharedInstance.timers
+        timers = TimerManager.sharedInstance.retrieveAllTimers()
         timerTable.setNumberOfRows((timers?.count)!, withRowType: "TimerTableController")
         loadTable()
     }
@@ -46,9 +46,9 @@ class InterfaceController: WKInterfaceController {
         for index in 0..<timers!.count {
             let row = timerTable.rowControllerAtIndex(index) as! TimerTableController
             let timer = timers![index]
+            row.index = index
             row.nameLabel.setText(timer.name)
             row.timerLabel.setText(timer.remainingTimeString())
-            row.currentTimer = timer
             
         }
     }

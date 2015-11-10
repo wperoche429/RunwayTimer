@@ -10,7 +10,7 @@ import Foundation
 
 class TimerManager {
     static let sharedInstance = TimerManager()
-    var timers : [Time]?
+    private var timers : [Time]?
     
     init () {
         self.timers = []
@@ -58,26 +58,34 @@ class TimerManager {
         
     }
     
-    func updateStorage() {
+    func retrieveAllTimers() -> [Time]? {
+        var sortedTimers : [Time] = []
+        var timerStarted : [Time] = []
+        for timer in timers! {
+            if (timer.timeStarted == nil) {
+                sortedTimers.append(timer)
+            } else  {
+                timerStarted.append(timer)
+            }
+        }
+        
+        let sortedTimerStarted = timerStarted.sort({ $0.timeStarted!.compare($1.timeStarted!) == NSComparisonResult.OrderedAscending })
+        
+        for sortedTimer in sortedTimerStarted.reverse() {
+            sortedTimers.insert(sortedTimer, atIndex: 0)
+        }
+        
+        return sortedTimers
+        
+    }
+    
+    private func updateStorage() {
         var timerArray : [NSData] = []
         for timer in timers! {
             timerArray.append(NSKeyedArchiver.archivedDataWithRootObject(timer))
         }
         
         NSUserDefaults.standardUserDefaults().setObject(timerArray, forKey: "saveTimers")
-    }
-    
-    
-    func createDummyTimer () {
-        for index in 0...3 {
-            let time = Time()
-            time.name = "Name " + String(index)
-            time.hour = 0
-            time.minute = index + 3 * index
-            time.second = index + 2 * index
-            time.timeStarted = nil
-            addTimer(time)
-        }
     }
     
 }
