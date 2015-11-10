@@ -110,48 +110,48 @@ class AddTimerInterfaceController: WKInterfaceController {
     override func willActivate() {
         // This method is called when watch view controller is about to be visible to user
         super.willActivate()
-        updateButton()
-        if (scheduledTimer != nil) {
-            scheduledTimer?.invalidate()
-            scheduledTimer = nil
-        }
+        updateUI()
+        startTimer()
         
-        scheduledTimer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("updateLabel"), userInfo: nil, repeats: true)
+        
     }
     
     override func didDeactivate() {
         // This method is called when watch view controller is no longer visible
         super.didDeactivate()
-        if (scheduledTimer != nil) {
-            scheduledTimer?.invalidate()
-            scheduledTimer = nil
-        }
+        stopTimer()
     }
     
     
     @IBAction func pauseResumeAction() {
-        if (timer?.timePause != nil) {
+        if let _ = timer?.timePause {
             timer?.resume()
         } else {
             timer?.pause()
         }
-        updateButton()
+        updateLabel()
+        updateUI()
+        TimerManager.reloadComplications()
     }
     
     @IBAction func startStopAction() {
         createTimer()
-        if (timer?.timeStarted != nil) {
+        if let _ = timer?.timeStarted {
             timer?.stop()
+            stopTimer()
         } else {
             timer?.start()
+            startTimer()
         }
-        updateButton()
+        updateLabel()
+        updateUI()
+        TimerManager.reloadComplications()
     }
     
     @IBAction func saveAction() {
         createTimer()
         timer?.save()
-        updateButton()
+        updateUI()
     }
     
     @IBAction func char1Changed(value: Int) {
@@ -190,35 +190,31 @@ class AddTimerInterfaceController: WKInterfaceController {
         
         var timerText = String(format: "%02d", uHour) + ":" + String(format: "%02d", uMin) + ":" + String(format: "%02d", uSec)
         if let _ = timer {
-            if (timer?.timeStarted != nil) {
+            if let _ = timer?.timeStarted {
                 timerText = (timer?.remainingTimeString())!
+            } else {
+                stopTimer()
+                updateUI()
             }
             
         }
-        
-        if (timer?.remainingTotalTime == 0 && timer?.timeStarted != nil) {
-            WKInterfaceDevice.currentDevice().playHaptic(.Notification)
-            timer?.stop()
-        }
-        
         timerLabel.setText(timerText)
-
         
-
+        
     }
     
     func createTimer() {
         if (timer == nil) {
             timer = Time()
         }
-        
+        timer?.repeating = false
         timer?.hour = localHour
         timer?.minute = localMinute
         timer?.second = localSeconds
         timer?.name = alphaNumericArray[char1] + alphaNumericArray[char2] + alphaNumericArray[char3]
     }
     
-    func updateButton() {
+    func updateUI() {
         if let _ = timer {
             if (timer?.timeStarted != nil) {
                 if (timer?.timePause != nil) {
@@ -272,6 +268,23 @@ class AddTimerInterfaceController: WKInterfaceController {
             
             char1Picker.focus()
             
+        }
+    }
+    
+    func startTimer() {
+        if let _ = timer?.timeStarted {
+            if let _ = scheduledTimer {
+            } else {
+                scheduledTimer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("updateLabel"), userInfo: nil, repeats: true)
+            }
+        }
+        
+    }
+    
+    func stopTimer() {
+        if let _ = scheduledTimer {
+            scheduledTimer?.invalidate()
+            scheduledTimer = nil
         }
     }
 }

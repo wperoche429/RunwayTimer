@@ -10,31 +10,33 @@ import WatchKit
 
 class TimerTableController: NSObject {
 
-    var scheduleTimer : NSTimer?
-    var index = 0
     @IBOutlet var nameLabel: WKInterfaceLabel!
     @IBOutlet var timerLabel: WKInterfaceLabel!
     
-    override init() {
-        super.init()
-        if (scheduleTimer != nil) {
-            scheduleTimer?.invalidate()
-            scheduleTimer = nil
-        }
-        scheduleTimer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("updateDisplay"), userInfo: nil, repeats: true)
-    }
-    
-    func updateDisplay() {
-        timerLabel.setText("")
-        nameLabel.setText("")
-        let timer = TimerManager.sharedInstance.retrieveAllTimers()![index]
-        nameLabel.setText(timer.name)
-        timerLabel.setText(timer.remainingTimeString())
-        if (timer.remainingTotalTime == 0 && timer.timeStarted != nil) {
-            WKInterfaceDevice.currentDevice().playHaptic(.Notification)
-            timer.stop()
-        }
-
-    }
+//    override init() {
+//        super.init()
+//        if (scheduleTimer != nil) {
+//            scheduleTimer?.invalidate()
+//            scheduleTimer = nil
+//        }
+//        scheduleTimer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("updateDisplay"), userInfo: nil, repeats: true)
+//    }
+//    
+//    func stopTimer() {
+//        if (scheduleTimer != nil) {
+//            scheduleTimer?.invalidate()
+//            scheduleTimer = nil
+//        }
+//    }
+//    
+//    func updateDisplay() {
+//        timerLabel.setText("")
+//        nameLabel.setText("")
+//        let timer = TimerManager.sharedInstance.retrieveAllTimers()![index]
+//        nameLabel.setText(timer.name)
+//        timerLabel.setText(timer.remainingTimeString())
+//        
+//        print(String(index) + ":" + timer.name + "-" + timer.remainingTimeString())
+//    }
 
 }

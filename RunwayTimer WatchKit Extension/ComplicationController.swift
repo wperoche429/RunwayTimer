@@ -11,22 +11,8 @@ import ClockKit
 
 class ComplicationController: NSObject, CLKComplicationDataSource {
     
-    override init() {
-        super.init()
-        NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("reloadComplications"), userInfo: nil, repeats: true)
-    }
-    
-    func reloadComplications() {
-        if let complications: [CLKComplication] = CLKComplicationServer.sharedInstance().activeComplications {
-            if complications.count > 0 {
-                for complication in complications {
-                    CLKComplicationServer.sharedInstance().reloadTimelineForComplication(complication)
-                    NSLog("Reloading complication \(complication.description)...")
-                }
-                
-            }
-        }
-    }
+    var timer : NSTimer?
+        
     
     // MARK: - Timeline Configuration
     
@@ -60,9 +46,18 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
             template.headerTextProvider = CLKSimpleTextProvider(text: "Finishing Timer")
             if let finishingTimer = TimerManager.sharedInstance.checkFinishingTimer() {
                 template.body1TextProvider = CLKSimpleTextProvider(text: finishingTimer.name + "   " + finishingTimer.remainingTimeString())
-                template
+                if let _ = timer {
+                    //Do nothing
+                } else {
+                    timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("reloadComplications"), userInfo: nil, repeats: true)
+                }
+                
             } else {
                 template.body1TextProvider = CLKSimpleTextProvider(text: "No running timer")
+                if let _ = timer {
+                    timer!.invalidate()
+                    timer = nil
+                }
             }
             
             let entry = CLKComplicationTimelineEntry(date: NSDate(),
@@ -72,6 +67,10 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
         } else {
             handler(nil)
         }
+    }
+    
+    func reloadComplications() {
+        TimerManager.reloadComplications()
     }
     
     func getTimelineEntriesForComplication(complication: CLKComplication, beforeDate date: NSDate, limit: Int, withHandler handler: (([CLKComplicationTimelineEntry]?) -> Void)) {
@@ -95,7 +94,13 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
     
     func getPlaceholderTemplateForComplication(complication: CLKComplication, withHandler handler: (CLKComplicationTemplate?) -> Void) {
         // This method will be called once per supported complication, and the results will be cached
-        handler(nil)
+        let template = CLKComplicationTemplateModularLargeStandardBody()
+        template.headerTextProvider =
+            CLKSimpleTextProvider(text: "My Timer")
+        template.body1TextProvider =
+            CLKSimpleTextProvider(text: "Remaining Time")
+        
+        handler(template)
     }
     
 }

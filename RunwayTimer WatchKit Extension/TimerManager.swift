@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import ClockKit
 
 class TimerManager {
     static let sharedInstance = TimerManager()
@@ -82,19 +83,17 @@ class TimerManager {
     func checkFinishingTimer() -> Time?{
         var runningTimer : [Time] = []
         for timer in timers! {
-            if (timer.timeStarted != nil) {
+            if (timer.timeStarted != nil && timer.timePause == nil) {
                 runningTimer.append(timer)
             }
         }
         
         if (runningTimer.count == 0) {
-            print("No running timer")
             return nil
         }
         
         let sortedTimer = runningTimer.sort({ $0.remainingTotalTime < $1.remainingTotalTime })
         let finishingTimer = sortedTimer[0]
-        print("Finishing timer: " + finishingTimer.name)
         return finishingTimer
     }
     
@@ -106,6 +105,18 @@ class TimerManager {
         }
         
         NSUserDefaults.standardUserDefaults().setObject(timerArray, forKey: "saveTimers")
+    }
+    
+    class func reloadComplications() {
+        if let complications: [CLKComplication] = CLKComplicationServer.sharedInstance().activeComplications {
+            if complications.count > 0 {
+                for complication in complications {
+                    CLKComplicationServer.sharedInstance().reloadTimelineForComplication(complication)
+                    NSLog("Reloading complication \(complication.description)...")
+                }
+                
+            }
+        }
     }
     
 }

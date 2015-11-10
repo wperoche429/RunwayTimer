@@ -14,23 +14,23 @@ class InterfaceController: WKInterfaceController {
 
     @IBOutlet var timerTable: WKInterfaceTable!
     var timers : [Time]?
+    var scheduleTimer : NSTimer?
     override func awakeWithContext(context: AnyObject?) {
         super.awakeWithContext(context)
         // Configure interface objects here.
-        NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("checkFinishingTimer"), userInfo: nil, repeats: true)
     }
 
     override func willActivate() {
         // This method is called when watch view controller is about to be visible to user
         super.willActivate()
-        timers = TimerManager.sharedInstance.retrieveAllTimers()
-        timerTable.setNumberOfRows((timers?.count)!, withRowType: "TimerTableController")
-        loadTable()
+        updateTimerList()
+        startTimer()
     }
 
     override func didDeactivate() {
         // This method is called when watch view controller is no longer visible
         super.didDeactivate()
+        stopTimer()
     }
 
 
@@ -47,7 +47,6 @@ class InterfaceController: WKInterfaceController {
         for index in 0..<timers!.count {
             let row = timerTable.rowControllerAtIndex(index) as! TimerTableController
             let timer = timers![index]
-            row.index = index
             row.nameLabel.setText(timer.name)
             row.timerLabel.setText(timer.remainingTimeString())
             
@@ -60,8 +59,23 @@ class InterfaceController: WKInterfaceController {
         
     }
     
-    func checkFinishingTimer() {
-        TimerManager.sharedInstance.checkFinishingTimer()
+    func startTimer() {
+        stopTimer()
+        scheduleTimer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("updateTimerList"), userInfo: nil, repeats: true)
+    }
+    
+    func stopTimer() {
+        if let _ = scheduleTimer {
+            scheduleTimer!.invalidate()
+            scheduleTimer = nil
+        }
+        
+    }
+    
+    func updateTimerList() {
+        timers = TimerManager.sharedInstance.retrieveAllTimers()
+        timerTable.setNumberOfRows((timers?.count)!, withRowType: "TimerTableController")
+        loadTable()
     }
     
 }

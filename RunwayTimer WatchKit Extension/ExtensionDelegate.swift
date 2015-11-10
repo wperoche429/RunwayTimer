@@ -12,6 +12,9 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
 
     func applicationDidFinishLaunching() {
         // Perform any final initialization of your application.
+        if let _ = TimerManager.sharedInstance.checkFinishingTimer() {
+            TimerManager.reloadComplications()
+        }
     }
 
     func applicationDidBecomeActive() {
