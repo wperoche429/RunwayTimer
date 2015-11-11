@@ -192,7 +192,7 @@ class AddTimerInterfaceController: WKInterfaceController, TimeDelegate {
             if let _ = timer?.timeStarted {
                 timerText = (timer?.timeInString)!
             } else {
-                updateUI()
+//                updateUI()
             }
             
         }

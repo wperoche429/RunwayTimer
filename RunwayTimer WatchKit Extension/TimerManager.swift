@@ -108,6 +108,7 @@ class TimerManager : NSObject {
         }
         
         NSUserDefaults.standardUserDefaults().setObject(timerArray, forKey: "saveTimers")
+        NSUserDefaults.standardUserDefaults().synchronize()
     }
     
     class func reloadComplications() {

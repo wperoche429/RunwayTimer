@@ -68,6 +68,7 @@ class Time: NSObject {
         repeating = aDecoder.decodeBoolForKey("repeating")
         
         if let _ = timeStarted {
+            remainingTotalTime = getTimerValue()
             startTimer()
         }
     }
