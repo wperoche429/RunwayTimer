@@ -9,17 +9,20 @@
 import Foundation
 import ClockKit
 
-class TimerManager {
+class TimerManager : NSObject {
     static let sharedInstance = TimerManager()
     private var timers : [Time]?
     
-    init () {
+    override init () {
+        super.init()
         self.timers = []
         if let timerArray = NSUserDefaults.standardUserDefaults().objectForKey("saveTimers") as? [NSData] {
             for data in timerArray {
                 self.timers?.append(NSKeyedUnarchiver.unarchiveObjectWithData(data) as! Time)
             }
         }
+        
+//        NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("updateAllTimer"), userInfo: nil, repeats: true)
     }
     
     func addTimer(time : Time) {
@@ -119,4 +122,7 @@ class TimerManager {
         }
     }
     
+//    func updateAllTimer() {
+//        print("Update")
+//    }
 }

@@ -45,7 +45,7 @@ class ComplicationController: NSObject, CLKComplicationDataSource {
             let template = CLKComplicationTemplateModularLargeStandardBody()
             template.headerTextProvider = CLKSimpleTextProvider(text: "Finishing Timer")
             if let finishingTimer = TimerManager.sharedInstance.checkFinishingTimer() {
-                template.body1TextProvider = CLKSimpleTextProvider(text: finishingTimer.name + "   " + finishingTimer.remainingTimeString())
+                template.body1TextProvider = CLKSimpleTextProvider(text: finishingTimer.name + "   " + finishingTimer.timeInString)
                 if let _ = timer {
                     //Do nothing
                 } else {

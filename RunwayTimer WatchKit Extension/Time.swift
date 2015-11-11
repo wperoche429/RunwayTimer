@@ -10,6 +10,10 @@ import UIKit
 import Foundation
 import WatchKit
 
+protocol TimeDelegate : class {
+    func timeUpdate(timeInString : String)
+}
+
 class Time: NSObject {
     
     var hour : Int = 0
@@ -22,8 +26,19 @@ class Time: NSObject {
     var id : String?
     var totalPauseTime : Int = 0
     var repeating = false
-    
+    var timeInString : String {
+        get {
+            var timeValue = getTimerValue()
+            if let _ = timeStarted {
+                timeValue = remainingTotalTime
+            }
+            return timerInString(timeValue)
+        }
+    }
+    private var myDelegates : [TimeDelegate] = []
+    private var scheduledTimer : NSTimer?
     override init() {
+        super.init()
         id = NSUUID().UUIDString
         timeStarted = nil
     }
@@ -41,6 +56,7 @@ class Time: NSObject {
     }
     
     init(coder aDecoder: NSCoder) {
+        super.init()
         name = aDecoder.decodeObjectForKey("name") as! String
         id = aDecoder.decodeObjectForKey("id") as? String
         hour = aDecoder.decodeIntegerForKey("hour")
@@ -50,19 +66,29 @@ class Time: NSObject {
         timeStarted = aDecoder.decodeObjectForKey("timeStarted") as? NSDate
         timePause = aDecoder.decodeObjectForKey("timePause") as? NSDate
         repeating = aDecoder.decodeBoolForKey("repeating")
+        
+        if let _ = timeStarted {
+            startTimer()
+        }
     }
     
     func save() {
         TimerManager.sharedInstance.addTimer(self)
     }
     
-    func remainingTimeString() -> String {
+    func updateTime () {
+        if (remainingTotalTime == 0 && timeStarted != nil) {
+            if !repeating {
+                stop()
+                for myDelegate in myDelegates {
+                    myDelegate.timeUpdate(timerInString(getTimerValue()))
+                }
+                return
+            }
+            
+        }
         
         let timerValue = getTimerValue()
-
-        if (timerValue == 0) {
-            return timerInString(0)
-        }
         
         if let _ = timeStarted {
             let currentDate = NSDate()
@@ -84,15 +110,18 @@ class Time: NSObject {
             remainingTotalTime = timerValue
         }
         
+        for myDelegate in myDelegates {
+            myDelegate.timeUpdate(timerInString(remainingTotalTime))
+        }
+        
         if (remainingTotalTime == 0 && timeStarted != nil) {
-            if !repeating {
-                stop()
-            }
+
             WKInterfaceDevice.currentDevice().playHaptic(.Notification)
             
         }
         
-        return timerInString(remainingTotalTime)
+        
+        
     }
     
     func start() {
@@ -101,6 +130,7 @@ class Time: NSObject {
         totalPauseTime = 0
         remainingTotalTime = getTimerValue()
         save()
+        startTimer()
     }
     
     func stop() {
@@ -108,6 +138,7 @@ class Time: NSObject {
         timePause = nil
         totalPauseTime = 0
         save()
+        stopTimer()
     }
     
     func pause() {
@@ -131,7 +162,7 @@ class Time: NSObject {
         return timerValue
     }
     
-    func timerInString(value : Int) -> String {
+    private func timerInString(value : Int) -> String {
         let uHour : Int = value / 3600
         let minLeft : Int = value / 60
         let uMin : Int = minLeft % 60
@@ -142,4 +173,43 @@ class Time: NSObject {
         return text
     }
     
+    func subscribe(delegate : TimeDelegate) {
+        var found = false
+        
+        for myDelegate in myDelegates {
+            if myDelegate === delegate {
+                found = true
+                break
+            }
+        }
+        
+        if !found {
+            myDelegates.append(delegate)
+        }
+        
+        
+    }
+    
+    func unsubscribe(delegate : TimeDelegate) {
+        var index = 0
+        for myDelegate in myDelegates {
+            if myDelegate === delegate {
+                myDelegates.removeAtIndex(index)
+                return
+            }
+            index++
+        }
+    }
+    
+    func startTimer() {
+        stopTimer()
+        scheduledTimer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("updateTime"), userInfo: nil, repeats: true)
+    }
+    
+    func stopTimer() {
+        if let _ = scheduledTimer {
+            scheduledTimer?.invalidate()
+            scheduledTimer = nil
+        }
+    }
 }

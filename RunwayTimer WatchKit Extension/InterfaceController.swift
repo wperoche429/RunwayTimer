@@ -48,7 +48,7 @@ class InterfaceController: WKInterfaceController {
             let row = timerTable.rowControllerAtIndex(index) as! TimerTableController
             let timer = timers![index]
             row.nameLabel.setText(timer.name)
-            row.timerLabel.setText(timer.remainingTimeString())
+            row.timerLabel.setText(timer.timeInString)
             
         }
     }
@@ -61,7 +61,7 @@ class InterfaceController: WKInterfaceController {
     
     func startTimer() {
         stopTimer()
-        scheduleTimer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("updateTimerList"), userInfo: nil, repeats: true)
+        scheduleTimer = NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: Selector("updateTimerList"), userInfo: nil, repeats: true)
     }
     
     func stopTimer() {

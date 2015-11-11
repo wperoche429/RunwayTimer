@@ -9,7 +9,7 @@
 import WatchKit
 import Foundation
 
-class AddTimerInterfaceController: WKInterfaceController {
+class AddTimerInterfaceController: WKInterfaceController, TimeDelegate {
 
     @IBOutlet var char1Picker: WKInterfacePicker!
     @IBOutlet var char2Picker: WKInterfacePicker!
@@ -22,7 +22,7 @@ class AddTimerInterfaceController: WKInterfaceController {
     @IBOutlet var startStopButton: WKInterfaceButton!
     @IBOutlet var saveButton: WKInterfaceButton!
     var timer : Time?
-    var scheduledTimer : NSTimer?
+//    var scheduledTimer : NSTimer?
     var localHour = 0
     var localMinute = 0
     var localSeconds = 0
@@ -110,8 +110,9 @@ class AddTimerInterfaceController: WKInterfaceController {
     override func willActivate() {
         // This method is called when watch view controller is about to be visible to user
         super.willActivate()
+        updateLabel()
         updateUI()
-        startTimer()
+        timer?.subscribe(self)
         
         
     }
@@ -119,7 +120,7 @@ class AddTimerInterfaceController: WKInterfaceController {
     override func didDeactivate() {
         // This method is called when watch view controller is no longer visible
         super.didDeactivate()
-        stopTimer()
+        timer?.unsubscribe(self)
     }
     
     
@@ -138,10 +139,8 @@ class AddTimerInterfaceController: WKInterfaceController {
         createTimer()
         if let _ = timer?.timeStarted {
             timer?.stop()
-            stopTimer()
         } else {
             timer?.start()
-            startTimer()
         }
         updateLabel()
         updateUI()
@@ -191,9 +190,8 @@ class AddTimerInterfaceController: WKInterfaceController {
         var timerText = String(format: "%02d", uHour) + ":" + String(format: "%02d", uMin) + ":" + String(format: "%02d", uSec)
         if let _ = timer {
             if let _ = timer?.timeStarted {
-                timerText = (timer?.remainingTimeString())!
+                timerText = (timer?.timeInString)!
             } else {
-                stopTimer()
                 updateUI()
             }
             
@@ -212,6 +210,7 @@ class AddTimerInterfaceController: WKInterfaceController {
         timer?.minute = localMinute
         timer?.second = localSeconds
         timer?.name = alphaNumericArray[char1] + alphaNumericArray[char2] + alphaNumericArray[char3]
+        timer?.subscribe(self)
     }
     
     func updateUI() {
@@ -271,20 +270,8 @@ class AddTimerInterfaceController: WKInterfaceController {
         }
     }
     
-    func startTimer() {
-        if let _ = timer?.timeStarted {
-            if let _ = scheduledTimer {
-            } else {
-                scheduledTimer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("updateLabel"), userInfo: nil, repeats: true)
-            }
-        }
-        
-    }
-    
-    func stopTimer() {
-        if let _ = scheduledTimer {
-            scheduledTimer?.invalidate()
-            scheduledTimer = nil
-        }
+    func timeUpdate(timeInString: String) {
+        timerLabel.setText(timeInString)
+        updateUI()
     }
 }

@@ -8,11 +8,11 @@
 
 import WatchKit
 
-class TimerTableController: NSObject {
+class TimerTableController: NSObject, TimeDelegate {
 
     @IBOutlet var nameLabel: WKInterfaceLabel!
     @IBOutlet var timerLabel: WKInterfaceLabel!
-    
+    var time : Time?
 //    override init() {
 //        super.init()
 //        if (scheduleTimer != nil) {
@@ -39,4 +39,8 @@ class TimerTableController: NSObject {
 //        print(String(index) + ":" + timer.name + "-" + timer.remainingTimeString())
 //    }
 
+    func timeUpdate(timeInString: String) {
+        timerLabel.setText(timeInString)
+    }
 }
+
